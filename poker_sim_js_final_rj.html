@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Poker Hand Simulator</title>
+<style>
+:root {
+  --bg: #111; --panel: #222; --btn: #1f3f7f; --card: #444;
+  --green: #2ecc71; --red: #e74c3c; --radius: .6em;
+}
+* {box-sizing: border-box; font-weight: bold;}
+body {
+  margin: 0; padding: 1rem; background: var(--bg); color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex; flex-direction: column; align-items: center;
+}
+.suit-row {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  width: 100%; max-width: 600px; margin-bottom: 0.4rem;
+  font-size: 2.6rem; text-align: center;
+}
+.card-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.35rem;
+  width: 100%; max-width: 600px; margin-bottom: 1rem;
+}
+.card-column {
+  display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+}
+.card-button {
+  width: 4rem; height: 4rem; background: var(--card);
+  border: none; border-radius: var(--radius); color: #fff; font-size: 1.4rem;
+}
+.card-button.green { background: var(--green); }
+.card-button.red   { background: var(--red); }
+.controls {
+  display: flex; gap: 1rem; width: 100%; max-width: 600px; margin-bottom: 1rem;
+}
+.control-button {
+  flex: 1; height: 4rem; background: var(--btn);
+  border: none; border-radius: var(--radius); color: #fff; font-size: 1.2rem;
+}
+#output-wrap {
+  width: 100%; max-width: 600px; height: 14rem;
+  display: flex; gap: 1rem; margin-bottom: 1rem;
+}
+.output-box {
+  flex: 1;
+  background: var(--panel);
+  border-radius: var(--radius);
+  padding: 0.6rem;
+  overflow-y: auto;
+  font-size: 1rem;
+  white-space: pre-wrap;
+}
+#names {text-align:right;}
+#simulations {
+  width: 100%; max-width: 600px; height: 3rem;
+  background: #333; color: #fff; border: none;
+  border-radius: var(--radius); text-align: center; font-size: 1.2rem;
+}
+</style></head><body>
+
+<div class="suit-row">
+  <span>♠️</span><span>♣️</span><span>❤️</span><span>♦️</span>
+</div>
+
+<div class="card-grid">
+<div class="card-column">
+  <button class="card-button" data-card="2S">2</button>
+  <button class="card-button" data-card="3S">3</button>
+  <button class="card-button" data-card="4S">4</button>
+  <button class="card-button" data-card="5S">5</button>
+  <button class="card-button" data-card="6S">6</button>
+  <button class="card-button" data-card="7S">7</button>
+  <button class="card-button" data-card="8S">8</button>
+  <button class="card-button" data-card="9S">9</button>
+  <button class="card-button" data-card="TS">T</button>
+  <button class="card-button" data-card="JS">J</button>
+  <button class="card-button" data-card="QS">Q</button>
+  <button class="card-button" data-card="KS">K</button>
+  <button class="card-button" data-card="AS">A</button>
+</div>
+<div class="card-column">
+  <button class="card-button" data-card="2C">2</button>
+  <button class="card-button" data-card="3C">3</button>
+  <button class="card-button" data-card="4C">4</button>
+  <button class="card-button" data-card="5C">5</button>
+  <button class="card-button" data-card="6C">6</button>
+  <button class="card-button" data-card="7C">7</button>
+  <button class="card-button" data-card="8C">8</button>
+  <button class="card-button" data-card="9C">9</button>
+  <button class="card-button" data-card="TC">T</button>
+  <button class="card-button" data-card="JC">J</button>
+  <button class="card-button" data-card="QC">Q</button>
+  <button class="card-button" data-card="KC">K</button>
+  <button class="card-button" data-card="AC">A</button>
+</div>
+<div class="card-column">
+  <button class="card-button" data-card="2H">2</button>
+  <button class="card-button" data-card="3H">3</button>
+  <button class="card-button" data-card="4H">4</button>
+  <button class="card-button" data-card="5H">5</button>
+  <button class="card-button" data-card="6H">6</button>
+  <button class="card-button" data-card="7H">7</button>
+  <button class="card-button" data-card="8H">8</button>
+  <button class="card-button" data-card="9H">9</button>
+  <button class="card-button" data-card="TH">T</button>
+  <button class="card-button" data-card="JH">J</button>
+  <button class="card-button" data-card="QH">Q</button>
+  <button class="card-button" data-card="KH">K</button>
+  <button class="card-button" data-card="AH">A</button>
+</div>
+<div class="card-column">
+  <button class="card-button" data-card="2D">2</button>
+  <button class="card-button" data-card="3D">3</button>
+  <button class="card-button" data-card="4D">4</button>
+  <button class="card-button" data-card="5D">5</button>
+  <button class="card-button" data-card="6D">6</button>
+  <button class="card-button" data-card="7D">7</button>
+  <button class="card-button" data-card="8D">8</button>
+  <button class="card-button" data-card="9D">9</button>
+  <button class="card-button" data-card="TD">T</button>
+  <button class="card-button" data-card="JD">J</button>
+  <button class="card-button" data-card="QD">Q</button>
+  <button class="card-button" data-card="KD">K</button>
+  <button class="card-button" data-card="AD">A</button>
+</div>
+
+</div>
+
+<div class="controls">
+  <button class="control-button" onclick="calculate()">Calculate</button>
+  <button class="control-button" onclick="resetAll()">Reset</button>
+</div>
+
+<div id="output-wrap">
+  <div class="output-box" id="names">Results</div>
+  <div class="output-box" id="values"></div>
+</div>
+
+<input id="simulations" type="number" value="100000" min="1" />
+
+<script>
+const RANKS='23456789TJQKA'.split('');const SUITS='SCHD'.split('');const HANDS=['Nothing','One Pair','Two Pair','Three of a Kind','Straight','Flush','Full House','Four of a Kind','Straight Flush','Royal Flush'];
+document.querySelectorAll('.card-button').forEach(b=>b.onclick=()=>{b.classList.contains('green')?(b.classList.remove('green'),b.classList.add('red')):b.classList.contains('red')?b.classList.remove('red'):b.classList.add('green')});
+
+function resetAll(){document.querySelectorAll('.card-button').forEach(b=>b.classList.remove('green','red'));document.getElementById('names').textContent='Results';document.getElementById('values').textContent='';}
+
+function getStates(){const r=[],d=[];document.querySelectorAll('.card-button').forEach(b=>{const c=b.dataset.card;b.classList.contains('green')?r.push(c):b.classList.contains('red')&&d.push(c);});return{revealed:r,dead:d};}
+
+function calculate(){const sims=parseInt(simulations.value)||100000;const{revealed,dead}=getStates();const used=new Set([...revealed,...dead]);const deck=[];for(let r of RANKS)for(let s of SUITS){const c=r+s;if(!used.has(c))deck.push(c);}if(revealed.length<2||revealed.length>7){names.textContent='Error';values.textContent='Select 2 to 7 revealed cards.';return;}const res=Array(10).fill(0),need=7-revealed.length;for(let i=0;i<sims;i++){const draw=[];while(draw.length<need){const card=deck[Math.floor(Math.random()*deck.length)];if(!draw.includes(card))draw.push(card);}const full=revealed.concat(draw);res[best(full)]++;}names.textContent=HANDS.join('\n');values.textContent=res.map(c=>c===0?'0.00% (impossible)':((c/sims*100).toFixed(2)+'% (1 in '+Math.round(sims/c)+')')).join('\n');}
+
+function best(cs){let b=0;for(const combo of comb(cs,5)){const v=rank(combo);if(v>b)b=v;if(b===9)break;}return b;}
+function rank(cs){const idx=c=>'23456789TJQKA'.indexOf(c[0]);const r=cs.map(idx).sort((a,b)=>a-b),s=cs.map(c=>c[1]);const cnt={};r.forEach(e=>cnt[e]=(cnt[e]||0)+1);const vals=Object.values(cnt).sort((a,b)=>b-a);const fl=s.every(e=>e===s[0]);const uniq=[...new Set(r)];const st=uniq.length===5&&(uniq[4]-uniq[0]===4||JSON.stringify(uniq)==='[0,1,2,3,12]');if(st&&fl&&r.includes(12)&&r.includes(8))return 9;if(st&&fl)return 8;if(vals[0]===4)return 7;if(vals[0]===3&&vals[1]===2)return 6;if(fl)return 5;if(st)return 4;if(vals[0]===3)return 3;if(vals[0]===2&&vals[1]===2)return 2;if(vals[0]===2)return 1;return 0;}
+function comb(a,k){if(k>a.length)return[];if(k===a.length)return[a];if(k===1)return a.map(e=>[e]);let c=[];for(let i=0;i<a.length-k+1;i++){const head=a.slice(i,i+1);for(const tail of comb(a.slice(i+1),k-1))c.push(head.concat(tail));}return c;}
+</script>
+
+</body></html>
